@@ -1,32 +1,17 @@
 # This config was automatically generated from your source code
 # Stacks detected: deps:node:.
 version: 2.1
-orbs:
-  node: circleci/node@5
 jobs:
-  test-node:
-    # Install node dependencies and run tests
-    executor: node/default
-    steps:
-      - checkout
-      - node/install-packages:
-          pkg-manager: npm
-      - run:
-          name: Run tests
-          command: echo \"No test specified in package.json\"
-  deploy:
-    # This is an example deploy job, not actually used by the workflow
+  build:
     docker:
-      - image: cimg/base:stable
+      - image: cimg/base:current
+    resource_class: antasena/label
     steps:
-      # Replace this with steps to deploy to users
-      - run:
-          name: deploy
-          command: '#e.g. ./deploy.sh'
+      - run: echo "Hi I'm on a Container Runner!"
 workflows:
-  build-and-test:
+  build-workflow:
     jobs:
-      - test-node
+      - build
     # - deploy:
     #     requires:
     #       - test-node
