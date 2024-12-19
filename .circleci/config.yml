@@ -25,7 +25,11 @@ jobs:
           command: '#e.g. ./deploy.sh'
 workflows:
   build-and-test:
-
-    - deploy:
-        requires:
-          - test-node
+    jobs:
+      - test-node
+      - deploy:
+          requires:
+            - test-node
+          filters:
+            branches:
+              only: main  # Hanya jalankan deploy pada branch main
