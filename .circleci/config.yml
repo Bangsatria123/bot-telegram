@@ -4,16 +4,23 @@ version: 2.1
 orbs:
   node: circleci/node@5
 jobs:
+  build : 
+    executor: node/default
+    steps : 
+      -checkout
+      =run : 
+          name: build
+          command: npm run build
   test-node:
     # Install node dependencies and run tests
     executor: node/default
     steps:
       - checkout
       - node/install-packages:
-          pkg-manager: npm
+          pkg-manager: npm i
       - run:
           name: Run tests
-          command: node main.js
+          command: npm start
   deploy:
     # This is an example deploy job, not actually used by the workflow
     docker:
