@@ -13,7 +13,7 @@ jobs:
           pkg-manager: npm
       - run:
           name: Run tests
-          command: npm start
+          command: node main.js
   deploy:
     # This is an example deploy job, not actually used by the workflow
     docker:
@@ -22,7 +22,7 @@ jobs:
       # Replace this with steps to deploy to users
       - run:
           name: deploy
-          command: '#e.g. ./deploy.sh'
+          command: 'node main.js'
 workflows:
   build-and-test:
     jobs:
@@ -32,4 +32,4 @@ workflows:
             - test-node
           filters:
             branches:
-              only: main  # Hanya jalankan deploy pada branch main
+              only: main 
