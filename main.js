@@ -1,6 +1,5 @@
 const TelegramBot = require("node-telegram-bot-api");
-
-const token = process.env.APIKEY;
+const token = "8127899842:AAGIIiMN-bQzfz-CDSSQFVq1HXltJ29Z8Fw";
 
 const bot = new TelegramBot(token, { polling: true });
 const prefix = ".";
@@ -12,6 +11,7 @@ const Delete = new RegExp(`^${prefix}del$`);
 const Ban = new RegExp(`^${prefix}ban$`);
 const Pin = new RegExp(`^${prefix}pin$`);
 const Unpin = new RegExp(`^${prefix}unpinAll$`);
+const Send = new RegExp(`^${prefix}send `)
 
 async function IsAdmin(chatId, userId) {
   try {
@@ -127,6 +127,37 @@ const Banreply = async (msg, chatId) => {
     console.error(error);
   }
 };
+
+
+bot.onText(Send, async(msg)=>{
+  const chatId= msg.chat.id
+  const userId = msg.text;
+  const user = msg.from.id
+
+  const adminCheck = await IsAdmin(chatId, user)
+
+  if(adminCheck){
+    bot.sendMessage(chatId, `${userId.trim().split(/\s+/).slice(1).join(" ")}`)
+    .then(bot.deleteMessage(chatId,msg.message_id))
+    .then(console.log(msg))
+  }
+})
+
+bot.on('message', (msg) => {
+  const chatId = msg.chat.id;
+  
+  // Mengirim pesan setiap 5 detik
+  setInterval(() => {
+    bot.sendMessage(chatId, 'Pesan ini dikirim setiap 5 detik!')
+    .then(msg => {
+      setTimeout(()=>{
+        bot.deleteMessage(chatId, msg.message_id)
+      },60 * 5000)
+    });
+  }, 5000 * 10)
+});
+
+
 
 // const BanUser = async(msg, chatId,username)=>{
 //     const chatId = msg.chat.id
