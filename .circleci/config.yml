@@ -4,12 +4,6 @@ version: 2.1
 orbs:
   node: circleci/node@5
 jobs:
-  build : 
-    executor: node/default
-    steps : 
-      = run: 
-          name: build
-          command: npm run build
   test-node:
     # Install node dependencies and run tests
     executor: node/default
@@ -21,11 +15,11 @@ jobs:
           name: Run tests
           command: npm start
   deploy:
-    # This is an example deploy job, not actually used by the workflow
+    # Ini adalah contoh pekerjaan deploy, tidak benar-benar digunakan oleh alur kerja
     docker:
       - image: cimg/base:stable
     steps:
-      # Replace this with steps to deploy to users
+      # Ganti ini dengan langkah untuk mendistribusikan ke pengguna
       - run:
           name: deploy
           command: node main.js
@@ -40,4 +34,4 @@ workflows:
             - build
           filters:
             branches:
-              only: main 
+              only: main
