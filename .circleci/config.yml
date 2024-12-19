@@ -26,12 +26,10 @@ jobs:
 workflows:
   build-and-test:
     jobs:
-      - build
       - test-node
       - deploy:
           requires:
             - test-node
-            - build
           filters:
             branches:
               only: main
