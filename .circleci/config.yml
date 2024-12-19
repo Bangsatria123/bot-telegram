@@ -8,7 +8,7 @@ jobs:
     executor: node/default
     steps : 
       -checkout
-      =run : 
+      = run: 
           name: build
           command: npm run build
   test-node:
