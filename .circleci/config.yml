@@ -10,7 +10,7 @@ jobs:
     steps:
       - checkout
       - node/install-packages:
-          pkg-manager: npm i
+          pkg-manager: npm
       - run:
           name: Run tests
           command: npm start
