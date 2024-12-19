@@ -12,6 +12,7 @@ const Ban = new RegExp(`^${prefix}ban$`);
 const Pin = new RegExp(`^${prefix}pin$`);
 const Unpin = new RegExp(`^${prefix}unpinAll$`);
 const Send = new RegExp(`^${prefix}send `)
+const Run = new RegExp(`^${prefix}run$`)
 
 async function IsAdmin(chatId, userId) {
   try {
@@ -59,11 +60,17 @@ bot.onText(Delete, async (msg) => {
   if (adminCheck) {
     if (msg.reply_to_message) {
       const msgId = msg.reply_to_message.message_id;
+      const text = msg.reply_to_message.text;
+      const sender = msg.reply_to_message.from.username
+      const deleter = msg.from.username
       bot
         .deleteMessage(chatId, msgId)
-        .then(bot.deleteMessage(chatId, msg.message_id));
+        .then(bot.deleteMessage(chatId, msg.message_id))
+        .then(
+          console.log(`${text} from @${sender} deleted by @${deleter}`)
+        )
     } else {
-      console.log(userid);
+      console.log(error);
     }
   } else {
     bot.deleteMessage(chatId, msg.message_id);
@@ -139,41 +146,46 @@ bot.onText(Send, async(msg)=>{
   if(adminCheck){
     bot.sendMessage(chatId, `${userId.trim().split(/\s+/).slice(1).join(" ")}`)
     .then(bot.deleteMessage(chatId,msg.message_id))
-    .then(console.log(msg))
+    .then(console.log(`${msg.from.username}`))
   }
 })
 
-bot.on('message', (msg) => {
+bot.onText(Run, async (msg) => {
   const chatId = msg.chat.id;
-  
-  // Mengirim pesan setiap 5 detik
+  const userId = msg.from.id
+
+  const adminCheck = await IsAdmin(chatId, userId);
+
+  if(adminCheck){
   setInterval(() => {
     bot.sendMessage(chatId, 'Pesan ini dikirim setiap 5 detik!')
     .then(msg => {
       setTimeout(()=>{
         bot.deleteMessage(chatId, msg.message_id)
-      },60 * 5000)
+      },1000 * 1800)
     });
-  }, 5000 * 10)
+  }, 1000 * 3600)}
 });
 
+bot.on(`message`, (msg)=>{
+  const chatId = msg.chat.id
+  const userid = msg.from.user 
+  const message = `maaf @${msg.from.username} pesan anda mengandung kata kata terlarang`
+  const banChat = ["bio", "hallo", "hai"]
+  const isBanned = banChat.some(banWord => msg.text.includes(banWord))
+    if (isBanned) {
+      bot.deleteMessage(chatId, msg.message_id)
+      .then(() => {
+        bot.sendMessage(chatId, message)
+        .then(msg =>{
+          setTimeout(()=>{
+            bot.deleteMessage(chatId, msg.message_id)
+          },5000)
+        })
+      })
+        }
+    })
 
 
-// const BanUser = async(msg, chatId,username)=>{
-//     const chatId = msg.chat.id
-//     const userId = msg.user.id
-//     try {
-//         await bot.banChatMember(chatId)
-//     } catch (error) {
-//         console.error(error);
-
-//     }
-// }
-
-// bot.onText(Tagall, async(msg)=>{
-//     const chatId= msg.chat.id;
-//     const GetMember = await bot.getChatMember(chatId);
-
-// })
 
 
