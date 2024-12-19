@@ -7,7 +7,6 @@ jobs:
   build : 
     executor: node/default
     steps : 
-      -checkout
       = run: 
           name: build
           command: npm run build
@@ -29,7 +28,7 @@ jobs:
       # Replace this with steps to deploy to users
       - run:
           name: deploy
-          command: 'node main.js'
+          command: node main.js
 workflows:
   build-and-test:
     jobs:
@@ -38,6 +37,7 @@ workflows:
       - deploy:
           requires:
             - test-node
+            - build
           filters:
             branches:
               only: main 
