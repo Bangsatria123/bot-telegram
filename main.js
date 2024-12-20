@@ -159,6 +159,9 @@ bot.onText(Run, async (msg) => {
   if(adminCheck){
   setInterval(() => {
     bot.sendMessage(chatId, 'Pesan ini dikirim setiap 5 detik!')
+    .then(()=>{
+      bot.deleteMessage(chatId,msg.message_id)
+    })
     .then(msg => {
       setTimeout(()=>{
         bot.deleteMessage(chatId, msg.message_id)
