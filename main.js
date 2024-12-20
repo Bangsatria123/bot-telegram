@@ -164,7 +164,9 @@ bot.onText(Run, async (msg) => {
         bot.deleteMessage(chatId, msg.message_id)
       },1000 * 1800)
     });
-  }, 1000 * 3600)}
+  }, 1000 * 3600).then(()=>{
+    bot.deleteMessage(chatId, msg.message_id)
+  })}
 });
 
 bot.on(`message`, (msg)=>{
